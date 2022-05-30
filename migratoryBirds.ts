@@ -1,7 +1,11 @@
 export function migratoryBirds(arr: number[]): number {
+  const dict = setTypesAndValues(arr);
+  const smallestSighting = getTheSmallestSighting(dict);
+  return smallestSighting;
+}
+
+function setTypesAndValues(arr: number[]): object {
   let dict: { [nameOfType: number]: number } = {};
-  let smallestType = 0;
-  let moreRepeated: number[] = [];
   for (const type of arr) {
     if (type in dict) {
       dict[type]++;
@@ -9,6 +13,29 @@ export function migratoryBirds(arr: number[]): number {
       dict[type] = 1;
     }
   }
-  console.log(dict);
-  return 0;
+  return dict;
+}
+
+function getTheSmallestSighting(dict: object): number {
+  let smallestSightingType = 0;
+  let smallestSightingMount = 0;
+  for (const [key, value] of Object.entries(dict)) {
+    const kN = Number(key);
+    if (smallestSightingType === 0) {
+      smallestSightingType = kN;
+      smallestSightingMount = value;
+      continue;
+    }
+    if (value > smallestSightingMount) {
+      smallestSightingType = kN;
+      smallestSightingMount = value;
+      continue;
+    }
+    if (value === smallestSightingMount) {
+      if (kN < smallestSightingType) {
+        smallestSightingType = kN;
+      }
+    }
+  }
+  return smallestSightingType;
 }
