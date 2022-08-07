@@ -5,7 +5,7 @@
  */
 export function migratoryBirds(arr: number[]): number {
   const dict = setTypesAndValues(arr);
-  const smallestSighting = getTheSmallestSighting(dict);
+  const smallestSighting = getTheSmallestLargestSighting(dict);
   return smallestSighting;
 }
 
@@ -31,25 +31,18 @@ function setTypesAndValues(arr: number[]): object {
  * @param dict The Sightings and how many time each is repeated
  * @returns The smallest largest sighting
  */
-function getTheSmallestSighting(dict: object): number {
+function getTheSmallestLargestSighting(dict: object): number {
   let smallestSightingType = 0;
   let smallestSightingMount = 0;
   for (const [key, value] of Object.entries(dict)) {
     const kN = Number(key);
-    if (smallestSightingType === 0) {
+    if (smallestSightingType === 0 || value > smallestSightingMount) {
       smallestSightingType = kN;
       smallestSightingMount = value;
       continue;
     }
-    if (value > smallestSightingMount) {
+    if (value === smallestSightingMount && kN < smallestSightingType) {
       smallestSightingType = kN;
-      smallestSightingMount = value;
-      continue;
-    }
-    if (value === smallestSightingMount) {
-      if (kN < smallestSightingType) {
-        smallestSightingType = kN;
-      }
     }
   }
   return smallestSightingType;
